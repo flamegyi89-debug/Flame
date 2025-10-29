@@ -7,7 +7,7 @@ if [[ ! -t 0 ]] && [[ -e /dev/tty ]]; then
 fi
 
 # ===== Logging & error handler =====
-LOG_FILE="/tmp/Flame_cloudrun_$(date +%s).log"
+LOG_FILE="/tmp/n4_cloudrun_$(date +%s).log"
 touch "$LOG_FILE"
 on_err() {
   local rc=$?
@@ -96,7 +96,7 @@ read -rp "👤 Owner/Channel Chat ID(s): " _ids || true
 [[ -n "${_ids:-}" ]] && TELEGRAM_CHAT_IDS="${_ids// /}"
 
 DEFAULT_LABEL="Join Flame VPN Channel"
-DEFAULT_URL="https://t.me/Flamevpnz"
+DEFAULT_URL="https://t.me/FlameVpnZ"
 BTN_LABELS=(); BTN_URLS=()
 
 read -rp "➕ Add URL button(s)? [y/N]: " _addbtn || true
@@ -175,10 +175,10 @@ echo "  3️⃣ VLESS gRPC"
 echo "  4️⃣ VMess WS"
 read -rp "Choose [1-4, default 1]: " _opt || true
 case "${_opt:-1}" in
-  2) PROTO="vless-ws"   ; IMAGE="docker.io/N4pro/vl:latest"        ;;
-  3) PROTO="vless-grpc" ; IMAGE="docker.io/N4pro/vlessgrpc:latest" ;;
-  4) PROTO="vmess-ws"   ; IMAGE="docker.io/N4pro/vmess:latest"     ;;
-  *) PROTO="trojan-ws"  ; IMAGE="docker.io/N4pro/tr:latest"        ;;
+  2) PROTO="vless-ws"   ; IMAGE="docker.io/n4pro/vl:latest"        ;;
+  3) PROTO="vless-grpc" ; IMAGE="docker.io/n4pro/vlessgrpc:latest" ;;
+  4) PROTO="vmess-ws"   ; IMAGE="docker.io/n4pro/vmess:latest"     ;;
+  *) PROTO="trojan-ws"  ; IMAGE="docker.io/n4pro/tr:latest"        ;;
 esac
 ok "Protocol selected: ${PROTO^^}"
 echo "[Docker Hidden] ${IMAGE}" >>"$LOG_FILE"
@@ -208,7 +208,7 @@ ok "CPU/Mem: ${CPU} vCPU / ${MEMORY}"
 
 # =================== Step 6: Service Name ===================
 banner "🪪 Step 6 — Service Name"
-SERVICE="${SERVICE:-freeFlamevpn}"
+SERVICE="${SERVICE:-flamevpn}"
 TIMEOUT="${TIMEOUT:-3600}"
 PORT="${PORT:-8080}"
 read -rp "Service name [default: ${SERVICE}]: " _svc || true
@@ -263,16 +263,16 @@ VMESS_UUID="0c890000-4733-b20e-067f-fc341bd20000"
 make_vmess_ws_uri(){
   local host="$1"
   local json=$(cat <<JSON
-{"v":"2","ps":"VMess-WS","add":"vpn.googleapis.com","port":"443","id":"${VMESS_UUID}","aid":"0","scy":"zero","net":"ws","type":"none","host":"${host}","path":"/Flame","tls":"tls","sni":"vpn.googleapis.com","alpn":"http/1.1","fp":"randomized"}
+{"v":"2","ps":"VMess-WS","add":"vpn.googleapis.com","port":"443","id":"${VMESS_UUID}","aid":"0","scy":"zero","net":"ws","type":"none","host":"${host}","path":"/FlameVpnZ","tls":"tls","sni":"vpn.googleapis.com","alpn":"http/1.1","fp":"randomized"}
 JSON
 )
   base64 <<<"$json" | tr -d '\n' | sed 's/^/vmess:\/\//'
 }
 
 case "$PROTO" in
-  trojan-ws)  URI="trojan://${TROJAN_PASS}@vpn.googleapis.com:443?path=%2FFlame&security=tls&host=${CANONICAL_HOST}&type=ws#Trojan-WS" ;;
-  vless-ws)   URI="vless://${VLESS_UUID}@vpn.googleapis.com:443?path=%2FFlame&security=tls&encryption=none&host=${CANONICAL_HOST}&type=ws#Vless-WS" ;;
-  vless-grpc) URI="vless://${VLESS_UUID_GRPC}@vpn.googleapis.com:443?mode=gun&security=tls&encryption=none&type=grpc&serviceName=Flame-grpc&sni=${CANONICAL_HOST}#VLESS-gRPC" ;;
+  trojan-ws)  URI="trojan://${TROJAN_PASS}@vpn.googleapis.com:443?path=%2FN4&security=tls&host=${CANONICAL_HOST}&type=ws#Flame-Trojan-WS" ;;
+  vless-ws)   URI="vless://${VLESS_UUID}@vpn.googleapis.com:443?path=%2FFlameVpnZ&security=tls&encryption=none&host=${CANONICAL_HOST}&type=ws#Flame-Vless-WS" ;;
+  vless-grpc) URI="vless://${VLESS_UUID_GRPC}@vpn.googleapis.com:443?mode=gun&security=tls&encryption=none&type=grpc&serviceName=flame-grpc&sni=${CANONICAL_HOST}#Flame-VLESS-gRPC" ;;
   vmess-ws)   URI="$(make_vmess_ws_uri "${CANONICAL_HOST}")" ;;
 esac
 
@@ -280,7 +280,7 @@ esac
 banner "📣 Step 10 — Telegram Notify"
 
 MSG=$(cat <<EOF
-🔥 <b>Flame Vpn Free Mytel Bypass Gcp</b>
+✅ <b>CloudRun Deploy Success</b>
 ━━━━━━━━━━━━━━━━━━
 <blockquote>🌍 <b>Region:</b> ${REGION}
 ⚙️ <b>Protocol:</b> ${PROTO^^}
