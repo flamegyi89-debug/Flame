@@ -290,7 +290,6 @@ MSG=$(cat <<EOF
 <blockquote>🕒 <b>Start:</b> ${START_LOCAL}
 ⏳ <b>End:</b> ${END_LOCAL}</blockquote>
 ━━━━━━━━━━━━━━━━━━
-blockquote>🔥 <b>@FlameVpnZ</b> </blockquote>
 EOF
 )
 
