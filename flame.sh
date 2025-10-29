@@ -96,7 +96,7 @@ read -rp "👤 Owner/Channel Chat ID(s): " _ids || true
 [[ -n "${_ids:-}" ]] && TELEGRAM_CHAT_IDS="${_ids// /}"
 
 DEFAULT_LABEL="Join Flame VPN Channel"
-DEFAULT_URL="https://t.me/Flamevpn"
+DEFAULT_URL="https://t.me/Flamevpnz"
 BTN_LABELS=(); BTN_URLS=()
 
 read -rp "➕ Add URL button(s)? [y/N]: " _addbtn || true
@@ -175,10 +175,10 @@ echo "  3️⃣ VLESS gRPC"
 echo "  4️⃣ VMess WS"
 read -rp "Choose [1-4, default 1]: " _opt || true
 case "${_opt:-1}" in
-  2) PROTO="vless-ws"   ; IMAGE="docker.io/Flamepro/vl:latest"        ;;
-  3) PROTO="vless-grpc" ; IMAGE="docker.io/Flamepro/vlessgrpc:latest" ;;
-  4) PROTO="vmess-ws"   ; IMAGE="docker.io/Flamepro/vmess:latest"     ;;
-  *) PROTO="trojan-ws"  ; IMAGE="docker.io/Flamepro/tr:latest"        ;;
+  2) PROTO="vless-ws"   ; IMAGE="docker.io/N4pro/vl:latest"        ;;
+  3) PROTO="vless-grpc" ; IMAGE="docker.io/N4pro/vlessgrpc:latest" ;;
+  4) PROTO="vmess-ws"   ; IMAGE="docker.io/N4pro/vmess:latest"     ;;
+  *) PROTO="trojan-ws"  ; IMAGE="docker.io/N4pro/tr:latest"        ;;
 esac
 ok "Protocol selected: ${PROTO^^}"
 echo "[Docker Hidden] ${IMAGE}" >>"$LOG_FILE"
